@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Error</title>
+
+<link rel="stylesheet" href="/webjars/font-awesome/5.11.2/css/all.css"
+	th:href="@{/webjars/font-awesome/5.11.2/css/all.css}">
+
+<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap"
+	rel="stylesheet">
+
+<link rel='stylesheet'
+	href='/webjars/bootstrap/4.3.1/css/bootstrap.min.css'
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+
+<script src="/webjars/jquery/3.3.1/jquery.min.js"
+	th:ref="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+
+<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+	th:ref="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+
+
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+	th:href="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+
+
+</head>
+<body>
+	<header class="bg-dark">
+		<div class="collapse text-white " id="collapsedContent">
+			<div class="container py-5">
+				<div class="row">
+					<div class="col-sm-12 col-md-6">
+						<h4 class="font-weight-bold">About</h4>
+						<p th:text="#{about-text}">This page is all about weather.
+							Just enter a location and you'll know if sun is shining for you.
+							tl;dr: data is requested via a rest call.</p>
+					</div>
+					<div class="col-sm-12 col-md-6 text-right">
+						<h4 class="font-weight-bold">Contact</h4>
+						<a href="#" th:href="@{https://github.com/omonsees}"
+							class="d-block text-white"><i class="fab fa-github">
+								omonsees</i> </a> <a href="#" th:href="@{https://twitter.com/o_monsees}"
+							class="d-block text-white"><i class="fab fa-twitter">
+								@o_monsees</i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="navbar nav navbar-dark">
+			<div class="container justify-content-between">
+				<a href="#" th:href="@{/weather}" class="navbar-brand"> <i
+					class="fas fa-cloud-sun"></i> RWeather
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#collapsedContent" aria-controls="collapsedContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+			</div>
+		</div>
+	</header>
+	<div class="container">
+		<div class="row">
+			<div class="col text-center">
+				<p th:text="${msg}">Ooops, seems like something went wrong</p>
+				<a href="/mvc/bar" th:href="@{/mvc/bar}">Help me!</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

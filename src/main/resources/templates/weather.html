@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="h-100">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>RWeather</title>
+<link rel="stylesheet"
+	href="webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+	th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+
+<link rel="stylesheet" href="/webjars/font-awesome/5.11.2/css/all.css"
+	th:href="@{/webjars/font-awesome/5.11.2/css/all.css}">
+
+<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap"
+	rel="stylesheet">
+
+<link href="#" th:href="@{/styles.css}" rel="stylesheet">
+
+<script src="webjars/jquery/3.3.1/jquery.min.js"
+	th:href="@{webjars/jquery/3.3.1/jquery.min.js}"></script>
+
+<script src="webjars/popper.js/1.14.7/umd/popper.min.js"
+	th:href="@{webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+
+<script src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+	th:href="@{webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+</head>
+<body class="h-100 m-0 bg-light d-flex flex-column">
+	<header class="bg-dark">
+		<div class="navbar nav navbar-dark py-3">
+			<div class="container justify-content-between">
+				<a href="#" th:href="@{/weather}" class="navbar-brand"> <i
+					class="fas fa-cloud-sun"></i> RWeather
+				</a>
+				<form class="form-inline my-2 my-lg-0" action="#"
+					th:action="@{/weather}" method="POST">
+
+					<div class="input-group">
+						<input type="text" name="location"
+							placeholder="Please enter a location"
+							th:placeholder="#{input-placeholder}" th:name="location"
+							class="form-control" pattern="([A-z0-9À-ž\s]){2,}" required
+							autofocus>
+						<div class="input-group-append">
+							<button class="btn btn-outline-success" type="submit">Go!</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</header>
+	<main role="main" class="bg-light my-auto ">
+	<div class="container-fluid ">
+		<div class="row bg-light align-items-center" id="dataRow"
+			th:classappend="${lweather != null} ? 'visible' : 'invisible'">
+
+			<div class="col text-center text-dark mb-5 pb-5">
+
+				<!--  jumbotron -->
+
+				<div class="jumbotron shadow text-break " id="weatherJumbotron">
+
+					<h1 th:text="${lweather != null} ? ${lweather.name} : ''"
+						class="display-5 ">The city name</h1>
+
+					<h1
+						th:text="${lweather != null} ? ${lweather.weather[0].description} : ''"
+						class="display-6">The weather description</h1>
+
+					<h1 th:text="${lweather != null} ? ${lweather.main.temp} : ''"
+						class="display-6">The weather description</h1>
+
+					<p class="lead">This is a simple hero unit, a simple
+						jumbotron-style component for calling extra attention to featured
+						content or information.</p>
+					<hr class="my-4">
+					<p>It uses utility classes for typography and spacing to space
+						content out within the larger container.</p>
+					<a class="btn btn-primary btn-lg" href="#" role="button">Learn
+						more</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	</main>
+	<footer class="bg-dark fixed-bottom text-muted" id="footer">
+		<div class="collapse text-white " id="collapsedContent">
+			<div class="container py-5">
+				<div class="row">
+					<div class="col-sm-12 col-md-6">
+						<h4 class="font-weight-bold">About</h4>
+						<p th:text="#{about-text}">This page is all about weather.
+							Just enter a location and you'll know if sun is shining for you.
+							tl;dr: data is requested via a rest call.</p>
+					</div>
+					<div class="col-sm-12 col-md-6 text-right">
+						<h4 class="font-weight-bold">Contact</h4>
+						<a href="#" th:href="@{https://github.com/omonsees}"
+							class="d-block text-white"><i class="fab fa-github">
+								omonsees</i> </a> <a href="#" th:href="@{https://twitter.com/o_monsees}"
+							class="d-block text-white"><i class="fab fa-twitter">
+								@o_monsees</i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="navbar nav navbar-dark">
+			<div class="container justify-content-between">
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#collapsedContent" aria-controls="collapsedContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<p class="m-2">
+					<i class="far fa-copyright"></i> omonsees
+				</p>
+			</div>
+		</div>
+
+	</footer>
+</body>
+</html>

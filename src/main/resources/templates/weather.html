@@ -43,42 +43,32 @@
 							class="form-control" pattern="([A-z0-9À-ž\s]){2,}" required
 							autofocus>
 						<div class="input-group-append">
-							<button class="btn btn-outline-success" type="submit">Go!</button>
+							<button class="btn btn-outline-success" type="submit"
+								th:text="#{search-btn}">Go!</button>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
 	</header>
-	<main role="main" class="bg-light my-auto ">
+	<main role="main" class="my-auto ">
 	<div class="container-fluid ">
-		<div class="row bg-light align-items-center" id="dataRow"
-			th:classappend="${lweather != null} ? 'visible' : 'invisible'">
-
-			<div class="col text-center text-dark mb-5 pb-5">
-
+		<div class="row  align-items-center" id="dataRow">
+			<div class="col text-center text-dark">
 				<!--  jumbotron -->
+				<div class="jumbotron shadow text-break" id="weatherJumbotron"
+					th:object="${lweather}">
 
-				<div class="jumbotron shadow text-break " id="weatherJumbotron">
-
-					<h1 th:text="${lweather != null} ? ${lweather.name} : ''"
-						class="display-5 ">The city name</h1>
-
-					<h1
-						th:text="${lweather != null} ? ${lweather.weather[0].description} : ''"
-						class="display-6">The weather description</h1>
-
-					<h1 th:text="${lweather != null} ? ${lweather.main.temp} : ''"
-						class="display-6">The weather description</h1>
-
-					<p class="lead">This is a simple hero unit, a simple
-						jumbotron-style component for calling extra attention to featured
-						content or information.</p>
+					<h1 class="font-weight-bold" th:text="*{name}">The city name</h1>
 					<hr class="my-4">
-					<p>It uses utility classes for typography and spacing to space
-						content out within the larger container.</p>
-					<a class="btn btn-primary btn-lg" href="#" role="button">Learn
-						more</a>
+
+					<img alt="weather icon" th:src="${iconUrl}">
+					<h5 th:text="*{weather[0].description}" class="d-inline-block">The
+						weather description</h5>
+					<br> <i class="fas fa-thermometer-half fa-3x mt-3 px-5"></i>
+
+					<h1 th:text="*{#numbers.formatDecimal(main.temp,1,1,'POINT')}+' °'"
+						class="d-inline">The temperature</h1>
 				</div>
 			</div>
 		</div>
@@ -117,7 +107,6 @@
 				</p>
 			</div>
 		</div>
-
 	</footer>
 </body>
 </html>

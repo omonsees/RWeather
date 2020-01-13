@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,42 +22,62 @@ import rocks.monsees.rest.service.WeatherService;
 @RequestMapping("/weather")
 public class WeatherController {
 
+	@Value("${owmIconUrl}")
+	private String owmIconUrl;
 	private WeatherService weatherService;
 
 	public WeatherController(WeatherService weatherService) {
 		super();
-		this.weatherService = weatherService;	
+		this.weatherService = weatherService;
 	}
 
 	@GetMapping
-	public ModelAndView getWeatherPage(HttpServletRequest request,ModelAndView mav) {
-		
+	public ModelAndView getWeatherPage(HttpServletRequest request, ModelAndView mav) {
+
 		String languages = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
 		Optional<LocationWeather> lw = weatherService.getDefaultWeatherByPrimaryLanguage(languages);
-		//TODO change button in weather html to be i18n
+
 		if (lw.isPresent()) {
 			mav.addObject("lweather", lw.get());
+			mav.addObject("iconUrl", getWeatherIconUrl(lw.get().getWeather()[0].getIcon()));
 		} else {
-			mav.addObject("notFound", "default Location"); 
+			mav.addObject("notFound", "default Location");
+			//TODO show Error page with "service not available"
+			throw new RuntimeException();
 		}
-		
+
 		mav.setViewName("weather");
 		return mav;
 	}
 
 	@PostMapping
-	public ModelAndView getWeatherPageWithLocationWeather(@RequestParam String location, HttpServletRequest request,ModelAndView mav) {
+	public ModelAndView getWeatherPageWithLocationWeather(@RequestParam String location, HttpServletRequest request,
+			ModelAndView mav) {
 
 		String languages = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
-		Optional<LocationWeather> lw = weatherService.getWeatherByCityName(location.trim(),languages);
+		Optional<LocationWeather> lw = weatherService.getWeatherByCityName(location.trim(), languages);
 		if (lw.isPresent()) {
 			mav.addObject("lweather", lw.get());
+			mav.addObject("iconUrl", getWeatherIconUrl(lw.get().getWeather()[0].getIcon()));
 		} else {
-			mav.addObject("notFound", location); 
+			Optional<LocationWeather> lwDefault = weatherService.getDefaultWeatherByPrimaryLanguage(languages);
+			if (lwDefault.isPresent()) {
+				mav.addObject("lweather", lwDefault.get());
+				mav.addObject("iconUrl", getWeatherIconUrl(lwDefault.get().getWeather()[0].getIcon()));
+				mav.addObject("notFound", location);
+			} else {
+				//TODO show Error page with "service not available"
+				throw new RuntimeException();
+			}
 		}
-		
+
 		mav.setViewName("weather");
 		return mav;
+	}
+	
+	
+	private String getWeatherIconUrl(String iconId) {
+		return owmIconUrl+iconId+"@2x.png";
 	}
 
 }

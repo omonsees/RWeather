@@ -37,26 +37,17 @@ public class WeatherService {
 		String language = getPrimaryLanguage(languages);
 
 		if (!accs.maximumCallsReached()) {
-			//TODO extract as method
-			UriComponentsBuilder urib = UriComponentsBuilder.newInstance().scheme("http").host(this.url)
-					.path("/data/2.5/weather").queryParam("q", city).queryParam("units", this.units)
-					.queryParam("lang", language).queryParam("APPID", this.appId);
+
+			String url = getUrlForRestCall(language, city);
 
 			try {
-				return Optional.of(rt.getForObject(urib.toUriString(), LocationWeather.class));
+				return Optional.of(rt.getForObject(url, LocationWeather.class));
 			} catch (HttpClientErrorException e) {
 				log.info("RestTemplate call raised exception", e);
 				return Optional.ofNullable(null);
 			}
 		}
 		return Optional.ofNullable(null);
-	}
-
-	private String getPrimaryLanguage(String languages) {
-		if (languages.startsWith("de")) {
-			return "de";
-		}
-		return "en";
 	}
 
 	public Optional<LocationWeather> getDefaultWeatherByPrimaryLanguage(String languages) {
@@ -71,12 +62,11 @@ public class WeatherService {
 		}
 
 		if (!accs.maximumCallsReached()) {
-			UriComponentsBuilder urib = UriComponentsBuilder.newInstance().scheme("http").host(this.url)
-					.path("/data/2.5/weather").queryParam("q", city).queryParam("units", this.units)
-					.queryParam("lang", language).queryParam("APPID", this.appId);
+
+			String url = getUrlForRestCall(language, city);
 
 			try {
-				return Optional.of(rt.getForObject(urib.toUriString(), LocationWeather.class));
+				return Optional.of(rt.getForObject(url, LocationWeather.class));
 			} catch (HttpClientErrorException e) {
 				log.info("RestTemplate call raised exception", e);
 				return Optional.ofNullable(null);
@@ -84,6 +74,22 @@ public class WeatherService {
 		}
 		return Optional.ofNullable(null);
 
+	}
+
+	private String getUrlForRestCall(String language, String city) {
+		UriComponentsBuilder urib = UriComponentsBuilder.newInstance().scheme("http").host(this.url)
+				.path("/data/2.5/weather").queryParam("q", city).queryParam("units", this.units)
+				.queryParam("lang", language).queryParam("APPID", this.appId);
+
+		return urib.toUriString();
+
+	}
+
+	private String getPrimaryLanguage(String languages) {
+		if (languages.startsWith("de")) {
+			return "de";
+		}
+		return "en";
 	}
 
 }

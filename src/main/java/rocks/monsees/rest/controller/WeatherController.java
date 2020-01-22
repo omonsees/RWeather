@@ -1,4 +1,4 @@
-package rocks.monsees.rest.thcontroller;
+package rocks.monsees.rest.controller;
 
 import java.util.Optional;
 
@@ -6,16 +6,19 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
 import rocks.monsees.rest.model.LocationWeather;
 import rocks.monsees.rest.service.WeatherService;
+import rocks.monsees.rest.validator.TestException;
 
 @Slf4j
 @Controller
@@ -41,9 +44,7 @@ public class WeatherController {
 			mav.addObject("lweather", lw.get());
 			mav.addObject("iconUrl", getWeatherIconUrl(lw.get().getWeather()[0].getIcon()));
 		} else {
-			mav.addObject("notFound", "default Location");
-			//TODO show Error page with "service not available"
-			throw new RuntimeException();
+			throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE);
 		}
 
 		mav.setViewName("weather");
@@ -66,18 +67,16 @@ public class WeatherController {
 				mav.addObject("iconUrl", getWeatherIconUrl(lwDefault.get().getWeather()[0].getIcon()));
 				mav.addObject("notFound", location);
 			} else {
-				//TODO show Error page with "service not available"
-				throw new RuntimeException();
+				throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE);
 			}
 		}
 
 		mav.setViewName("weather");
 		return mav;
 	}
-	
-	
+
 	private String getWeatherIconUrl(String iconId) {
-		return owmIconUrl+iconId+"@2x.png";
+		return owmIconUrl + iconId + "@2x.png";
 	}
 
 }

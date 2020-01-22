@@ -9,19 +9,19 @@ import org.springframework.web.client.RestTemplate;
 
 class WeatherServiceTest {
 
-	WeatherService ws;
-
-	@BeforeEach
-	void setUp() throws Exception {
-
-//		ws = new WeatherService("2", "foo", "bar", new RestTemplate());
-
-	}
-
-	@Test
-	void test() {
-
-		fail("not yet implemented");
-	}
+//	WeatherService ws;
+//
+//	@BeforeEach
+//	void setUp() throws Exception {
+//
+////		ws = new WeatherService("2", "foo", "bar", new RestTemplate());
+//
+//	}
+//
+//	@Test
+//	void test() {
+//
+//		fail("not yet implemented");
+//	}
 
 }

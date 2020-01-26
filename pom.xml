@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>rocks.monsees</groupId>
-	<artifactId>ConsumeRestWithEmbeddable</artifactId>
+	<artifactId>RWeather</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ConsumeRestWithEmbeddable</name>
-	<description>Test Rest with Embeddable</description>
+	<description>Weather app using rest call to fetch data from OpenWeatherMap</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -72,6 +72,11 @@
 			<groupId>org.webjars</groupId>
 			<artifactId>font-awesome</artifactId>
 			<version>5.11.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 

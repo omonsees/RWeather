@@ -16,27 +16,27 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
+import rocks.monsees.rest.configuration.OWMConfiguration;
 import rocks.monsees.rest.model.LocationWeather;
 import rocks.monsees.rest.service.WeatherService;
-import rocks.monsees.rest.validator.TestException;
 
 @Slf4j
 @Controller
 @RequestMapping("/weather")
 public class WeatherController {
 
-	@Value("${owmIconUrl}")
-	private String owmIconUrl;
 	private WeatherService weatherService;
+	private OWMConfiguration owmConfig;
 
-	public WeatherController(WeatherService weatherService) {
+	public WeatherController(WeatherService weatherService, OWMConfiguration owmConfig) {
 		super();
 		this.weatherService = weatherService;
+		this.owmConfig=owmConfig;
 	}
 
 	@GetMapping
 	public ModelAndView getWeatherPage(HttpServletRequest request, ModelAndView mav) {
-
+		
 		String languages = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
 		Optional<LocationWeather> lw = weatherService.getDefaultWeatherByPrimaryLanguage(languages);
 
@@ -61,6 +61,7 @@ public class WeatherController {
 			mav.addObject("lweather", lw.get());
 			mav.addObject("iconUrl", getWeatherIconUrl(lw.get().getWeather()[0].getIcon()));
 		} else {
+			// TODO add toast message if location not found
 			Optional<LocationWeather> lwDefault = weatherService.getDefaultWeatherByPrimaryLanguage(languages);
 			if (lwDefault.isPresent()) {
 				mav.addObject("lweather", lwDefault.get());
@@ -76,7 +77,7 @@ public class WeatherController {
 	}
 
 	private String getWeatherIconUrl(String iconId) {
-		return owmIconUrl + iconId + "@2x.png";
+		return owmConfig.getIconurl() + iconId + "@2x.png";
 	}
 
 }

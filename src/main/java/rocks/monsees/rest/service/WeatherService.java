@@ -33,10 +33,10 @@ public class WeatherService {
 		this.accs = accs;
 	}
 
-	public Optional<LocationWeather> getWeatherByCityName(String cityWithUmlauts, String languages) {
+	public Optional<LocationWeather> getWeatherByCityName(String city, String languages) {
 
-		String city = removeUmlautsFromCityString(cityWithUmlauts);
 		String language = getPrimaryLanguage(languages);
+		city = removeUmlautsFromCityString(city);
 
 		if (!accs.maximumCallsReached()) {
 
@@ -69,7 +69,6 @@ public class WeatherService {
 			try {
 				return Optional.of(rt.getForObject(url, LocationWeather.class));
 			} catch (HttpClientErrorException e) {
-				log.info("RestTemplate call raised exception", e);
 				return Optional.ofNullable(null);
 			}
 		}
@@ -77,15 +76,14 @@ public class WeatherService {
 
 	}
 
-	private String getUrlForRestCall(String language, String cityWithUmlauts) {
-		
-		String city = removeUmlautsFromCityString(cityWithUmlauts);
-		
+	private String getUrlForRestCall(String language, String city) {
+
+		city = removeUmlautsFromCityString(city);
+
 		UriComponentsBuilder urib = UriComponentsBuilder.newInstance().scheme("http").host(this.url)
 				.path("/data/2.5/weather").queryParam("q", city).queryParam("units", this.units)
 				.queryParam("lang", language).queryParam("APPID", this.appId);
 
-		log.debug("Uri: " + urib.toUriString());
 		return urib.toUriString();
 
 	}
@@ -100,10 +98,11 @@ public class WeatherService {
 	private String removeUmlautsFromCityString(String city) {
 		String[][] umlaute = new String[][] { { "ä", "ae" }, { "ö", "oe" }, { "ü", "ue" } };
 
-		for (int i = 0; i < umlaute.length; i++) {
-			city = city.replace(umlaute[i][0], umlaute[i][1]);
+		if (city.contains("ä") || city.contains("ö") || city.contains("ü")) {
+			for (int i = 0; i < umlaute.length; i++) {
+				city = city.replace(umlaute[i][0], umlaute[i][1]);
+			}
 		}
-
 		return city;
 	}
 

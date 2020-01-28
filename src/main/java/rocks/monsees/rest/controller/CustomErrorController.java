@@ -36,15 +36,13 @@ public class CustomErrorController implements ErrorController {
 
 		// add status code to model for proper message rendering on template
 		// does it ever become null? Cause Spring is wrapping unhandled exceptions
-		//TODO add switch statement for other errors
+		//TODO add switch case for other errors
 		if (statusCode != null) {
 			int status = Integer.valueOf(statusCode.toString());
 			if (status == HttpStatus.NOT_FOUND.value()) {
-				// TODO use i18n for error message
 				 error = "404";
-			} else if (status >= 500) {
-				error = "500";
 			}
+			//default is 500
 		}
 		mav.addObject("error", error);
 		mav.setViewName("error");

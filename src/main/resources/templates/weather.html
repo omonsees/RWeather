@@ -25,6 +25,15 @@
 
 <script src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"
 	th:href="@{webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+
+
+<script th:inline="javascript">
+	$(document).ready(function() {
+		if([[${unknownLocation}]] != null){
+		$('#toast').toast('show');
+		}
+	});
+</script>
 </head>
 <body class="h-100 m-0 bg-light d-flex flex-column">
 	<header class="bg-dark">
@@ -43,36 +52,46 @@
 							class="form-control" pattern="([A-z0-9À-ž\s]){2,}" required
 							autofocus>
 						<div class="input-group-append">
-							<button class="btn btn-outline-success" type="submit"
-								th:text="#{search-btn}">Go!</button>
+							<button id="searchBtn" class="btn btn-outline-success"
+								type="submit" th:text="#{search-btn}">Go!</button>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
 	</header>
+	<div id="toast" class="toast align-self-center hide" data-delay="5000">
+		<div class="toast-header">
+			<i class="fas fa-exclamation-circle"></i> <strong class="ml-1 mr-auto">Oooops</strong>
+			<button type="button" class="ml-auto mb-1 close" data-dismiss="toast">&times;</button>
+		</div>
+		<div class="toast-body" th:text="#{noDataFound} + ${unknownLocation}">We
+			couldn`t get data for this location</div>
+	</div>
 	<main role="main" class="my-auto ">
-	<div class="container-fluid ">
-		<div class="row  align-items-center" id="dataRow">
-			<div class="col text-center text-dark">
-				<!--  jumbotron -->
-				<div class="jumbotron shadow text-break" id="weatherJumbotron"
-					th:object="${lweather}">
+		<div class="container-fluid ">
+			<div class="row  align-items-center" id="dataRow">
+				<div class="col text-center text-dark">
+					<!--  jumbotron -->
+					<div class="jumbotron shadow text-break" id="weatherJumbotron"
+						th:object="${lweather}">
 
-					<h1 class="font-weight-bold" th:text="*{name}">The city name</h1>
-					<hr class="my-4">
+						<h1 class="font-weight-bold" th:text="*{name}">The city name</h1>
+						<hr class="my-4">
 
-					<img alt="weather icon" th:src="${iconUrl}">
-					<h5 th:text="*{weather[0].description}" class="d-inline-block">The
-						weather description</h5>
-					<br> <i class="fas fa-thermometer-half fa-3x mt-3 px-5"></i>
+						<img alt="weather icon" th:src="${iconUrl}">
+						<h5 th:text="*{weather[0].description}" class="d-inline-block">The
+							weather description</h5>
+						<br> <i class="fas fa-thermometer-half fa-3x mt-3 px-5"></i>
 
-					<h1 th:text="*{#numbers.formatDecimal(main.temp,1,1,'POINT')}+' °'"
-						class="d-inline">The temperature</h1>
+						<h1
+							th:text="*{#numbers.formatDecimal(main.temp,1,1,'POINT')}+' °'"
+							class="d-inline">The temperature</h1>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+
 	</main>
 	<footer class="bg-dark fixed-bottom text-muted" id="footer">
 		<div class="collapse text-white " id="collapsedContent">

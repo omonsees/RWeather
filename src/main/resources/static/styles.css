@@ -9,10 +9,15 @@ body {
 	-o-background-size: cover;
 }
 
-#weatherJumbotron{
-	
-	background: rgba(234, 234, 251,0.8);
 
+#toast{
+	overflow:visible;
+	background: rgba(234, 234, 251,0.8);
+}
+
+
+#weatherJumbotron {
+	background: rgba(234, 234, 251,0.8);
 }
 
 

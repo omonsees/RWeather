@@ -66,7 +66,7 @@ public class WeatherController {
 			if (lwDefault.isPresent()) {
 				mav.addObject("lweather", lwDefault.get());
 				mav.addObject("iconUrl", getWeatherIconUrl(lwDefault.get().getWeather()[0].getIcon()));
-				mav.addObject("notFound", location);
+				mav.addObject("unknownLocation", location);
 			} else {
 				throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE);
 			}
